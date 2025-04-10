@@ -24,6 +24,8 @@ const MenuPage: React.FC = () => {
   const [desserts, setDesserts] = useState<Dessert[]>([]);
   const [cuisines, setCuisines] = useState<Cuisine[]>([]);
 
+  const [selectedItems, setSelectedItems] = useState([]);
+
   const [createCuisineModalShow, setCreateCuisineModalShow] = useState(false);
   const [createMealModalShow, setCreateMealModalShow] = useState(false);
   const [createDrinkModalShow, setCreateDrinkModalShow] = useState(false);
@@ -131,6 +133,18 @@ const MenuPage: React.FC = () => {
       console.error("Error creating dessert", error);
     }
   };
+
+  // const handleCheckboxChange = (group: string, value: string) => {
+  //   setSelectedItems(prev => {
+  //     const exists = prev.find(item => item.group === group && item.value === value);
+      
+  //     if (exists) {
+  //       return prev.filter(item => !(item.group === group && item.value === value));
+  //     } else {
+  //       return [...prev, {group, value}];
+  //     }
+  //   });
+  // };
 
   interface Button {
     label: string;
@@ -243,8 +257,7 @@ const MenuPage: React.FC = () => {
         />
       </>
 
-      <section>
-        <MenuSectionCard
+      <MenuSectionCard
           isAdmin={isAdmin}
           name="Drinks"
           items={drinks}
@@ -299,7 +312,6 @@ const MenuPage: React.FC = () => {
             Order now
           </button>
         </div>
-      </section>
     </div>
   );
 };
