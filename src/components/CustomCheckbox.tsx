@@ -7,7 +7,7 @@ interface CustomCheckboxProps {
 const CustomCheckbox: React.FC<CustomCheckboxProps> = ({ label }) => {
     return (
       <Form>
-        <div key={"default-checkbox"} className="mb-3">
+        <div key={"default-checkbox"} className="mb-1">
             <Form.Check
               type="checkbox"
               id={"default-checkbox"}
