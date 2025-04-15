@@ -1,6 +1,6 @@
 import React from "react";
 
-const Report: React.FC = () => {
+const ReportPage: React.FC = () => {
   return (
     <div>
       Report page
@@ -8,4 +8,4 @@ const Report: React.FC = () => {
   );
 };
 
-export default Report;
+export default ReportPage;

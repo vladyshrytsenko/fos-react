@@ -1,6 +1,6 @@
 import React from "react";
 
-const PaymentSuccess: React.FC = () => {
+const PaymentSuccessPage: React.FC = () => {
   return (
     <div>
       PaymentSuccess page
@@ -8,4 +8,4 @@ const PaymentSuccess: React.FC = () => {
   );
 };
 
-export default PaymentSuccess;
+export default PaymentSuccessPage;

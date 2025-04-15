@@ -38,7 +38,10 @@ const mealService = {
         instance.put<Meal>(`/${id}`, meal).then(res => res.data),
     
     deleteById: (id: number): Promise<void> => 
-        instance.delete<void>(`/${id}`).then(res => res.data)
+        instance.delete<void>(`/${id}`).then(res => res.data),
+
+    deleteAllByIds: (ids: number[]): Promise<void> => 
+        instance.delete<void>("/delete", { data: ids }).then(res => res.data)
 };
 
 export default mealService;

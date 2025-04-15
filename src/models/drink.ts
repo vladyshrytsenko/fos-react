@@ -1,6 +1,6 @@
 
 export interface Drink {
-    id?: number;
+    id: number;
     createdAt?: Date;
     updatedAt?: Date;
     isDeleted?: boolean;
