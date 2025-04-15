@@ -4,6 +4,7 @@ import "./CustomNavbar.css";
 import authService from "../../services/authService";
 import { Role, User } from "../../models/user";
 import userService from "../../services/userService";
+import { Button } from "react-bootstrap";
 
 export default function CustomNavbar() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -56,7 +57,7 @@ export default function CustomNavbar() {
 
         <div className="ml-auto d-flex align-items-center">
           <p className="text-white mb-0 mr-2">Welcome, {currentUser.email}! ({currentUser.role})</p>
-          <button type="button" className="btn btn-outline-danger" onClick={authService.logout}>Logout</button>
+          <Button onClick={authService.logout} variant="danger">Log out</Button>
         </div>
       </div>
 

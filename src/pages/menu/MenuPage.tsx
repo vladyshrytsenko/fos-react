@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Sidebar from "../../components/sidebar/Sidebar";
 import MenuSectionCard from "../../components/card/MenuSectionCard";
 import CustomNavbar from "../../components/navbar/CustomNavbar";
 import { Dessert } from "../../models/dessert";
@@ -9,27 +8,40 @@ import { Order } from "../../models/order";
 import drinkService from "../../services/drinkService";
 import mealService from "../../services/mealService";
 import dessertService from "../../services/dessertService";
-import storageService from "../../services/storageService";
 import userService from "../../services/userService";
-import MyModal from "../../components/BootstrapModal";
-import { Button } from "react-bootstrap";
 import BootstrapModal from "../../components/BootstrapModal";
 import { Cuisine } from "../../models/cuisine";
 import cuisineService from "../../services/cuisineService";
 import MenuEntityForm from "../../components/MenuEntityForm";
+import orderService from "../../services/orderService";
+import { Payment } from "../../models/payment";
+import { useNavigate } from "react-router-dom";
+import { Button } from "react-bootstrap";
 
 const MenuPage: React.FC = () => {
+  const navigate = useNavigate();
+
   const [drinks, setDrinks] = useState<Drink[]>([]);
   const [meals, setMeals] = useState<Meal[]>([]);
   const [desserts, setDesserts] = useState<Dessert[]>([]);
   const [cuisines, setCuisines] = useState<Cuisine[]>([]);
 
-  const [selectedItems, setSelectedItems] = useState([]);
-
   const [createCuisineModalShow, setCreateCuisineModalShow] = useState(false);
   const [createMealModalShow, setCreateMealModalShow] = useState(false);
   const [createDrinkModalShow, setCreateDrinkModalShow] = useState(false);
   const [createDessertModalShow, setCreateDessertModalShow] = useState(false);
+
+  const [isDrinkBulkDeletionEnabled, setDrinkBulkDeletionEnabled] = useState(false);
+  const [isDessertBulkDeletionEnabled, setDessertBulkDeletionEnabled] = useState(false);
+  const [isMealBulkDeletionEnabled, setMealBulkDeletionEnabled] = useState(false);
+
+  const [order, setOrder] = useState<Order>({
+    dessertNames: [],
+    drinkNames: [],
+    mealNames: [],
+    payment: null,
+    totalPrice: 0
+  });
 
   const isAdmin: boolean = userService.isAdmin();
 
@@ -89,9 +101,28 @@ const MenuPage: React.FC = () => {
     }
   };
 
+  const handleMealDeleteSelected = async () => {
+    try {
+      const ids = order.meals!.map(meal => meal.id);
+      await mealService.deleteAllByIds(ids);
+  
+      setOrder(prev => ({
+        ...prev,
+        meals: [],
+        mealNames: [],
+        totalPrice: prev.totalPrice - order.meals!.reduce((acc, meal) => acc + meal.price, 0)
+      }));
+
+      mealService.findAll().then(data => setMeals(data));
+    } catch (error) {
+      console.error("Failed to delete selected meals", error);
+    }
+  };
+
   const handleMealSubmit = async (data: Record<string, string | number>) => {
     try {
       const createdMeal = await mealService.create({
+        id: data.id as number,
         name: data.name as string,
         price: data.price as number,
         portionWeight: data.portionWeight as number,
@@ -105,9 +136,28 @@ const MenuPage: React.FC = () => {
     }
   };
 
+  const handleDrinkDeleteSelected = async () => {
+    try {
+      const ids = order.drinks!.map(drink => drink.id);
+      await drinkService.deleteAllByIds(ids);
+  
+      setOrder(prev => ({
+        ...prev,
+        drinks: [],
+        drinkNames: [],
+        totalPrice: prev.totalPrice - order.drinks!.reduce((acc, drink) => acc + drink.price, 0)
+      }));
+
+      drinkService.findAll().then(data => setDrinks(data));
+    } catch (error) {
+      console.error("Failed to delete selected drinks", error);
+    }
+  };
+
   const handleDrinkSubmit = async (data: Record<string, string | number>) => {
     try {
       const createdDrink = await drinkService.create({
+        id: data.id as number,
         name: data.name as string,
         price: data.price as number
       });
@@ -119,9 +169,28 @@ const MenuPage: React.FC = () => {
     }
   };
 
+  const handleDessertDeleteSelected = async () => {
+    try {
+      const ids = order.desserts!.map(dessert => dessert.id);
+      await dessertService.deleteAllByIds(ids);
+  
+      setOrder(prev => ({
+        ...prev,
+        desserts: [],
+        dessertNames: [],
+        totalPrice: prev.totalPrice - order.desserts!.reduce((acc, dessert) => acc + dessert.price, 0)
+      }));
+
+      dessertService.findAll().then(data => setDesserts(data));
+    } catch (error) {
+      console.error("Failed to delete selected desserts", error);
+    }
+  };
+
   const handleDessertSubmit = async (data: Record<string, string | number>) => {
     try {
       const createdDessert = await dessertService.create({
+        id: data.id as number,
         name: data.name as string,
         price: data.price as number,
         portionWeight: data.portionWeight as number
@@ -134,28 +203,25 @@ const MenuPage: React.FC = () => {
     }
   };
 
-  // const handleCheckboxChange = (group: string, value: string) => {
-  //   setSelectedItems(prev => {
-  //     const exists = prev.find(item => item.group === group && item.value === value);
-      
-  //     if (exists) {
-  //       return prev.filter(item => !(item.group === group && item.value === value));
-  //     } else {
-  //       return [...prev, {group, value}];
-  //     }
-  //   });
-  // };
+  const submitOrder = async () => {
+    console.log('Order submitted:', order);
 
-  interface Button {
-    label: string;
-    bootstrap_color: string;
-    onClick: () => void;
+    order.iceCubes = true;
+    order.lemon = true;
+    order.totalPrice = parseFloat(order.totalPrice.toFixed(2)) * 100; // in cents
+
+    try {
+      const createdOrder = await orderService.create(order);
+      console.log('Order created successfully:', createdOrder);
+      navigate(`/payment/${createdOrder.payment?.id}`);
+    } catch (error) {
+      console.error('Failed to submit order:', error);
+    }
   }
 
   return (
     <div>
       <CustomNavbar />
-
       <>
         <BootstrapModal
           show={createCuisineModalShow}
@@ -265,10 +331,26 @@ const MenuPage: React.FC = () => {
             [
               {
                 label: "Create",
-                bootstrap_color: "btn-primary",
+                bootstrap_color: "outline-success",
                 onClick: showCreateDrinkModal,
+                isEnabled: true
               },
-            ] as unknown as Button[]
+              {
+                label: "Delete selected",
+                bootstrap_color: "outline-danger",
+                onClick: handleDrinkDeleteSelected,
+                isEnabled: isDrinkBulkDeletionEnabled
+              }
+            ]
+          }
+          selectedItemNames={order.drinkNames}
+          onSelectionChange={(selectedDrinks) => {
+            const drinkNames = selectedDrinks.map(drink => drink.name);
+            setOrder((prev) => ({ ...prev, drinks: selectedDrinks, drinkNames: drinkNames }));
+            setDrinkBulkDeletionEnabled(selectedDrinks.length > 0);
+          }}
+          onPriceChange={(priceDelta) =>
+            setOrder((prev) => ({ ...prev, totalPrice: prev.totalPrice + priceDelta }))
           }
         />
 
@@ -280,15 +362,32 @@ const MenuPage: React.FC = () => {
             [
               {
                 label: "Create",
-                bootstrap_color: "btn-primary",
+                bootstrap_color: "outline-success",
                 onClick: showCreateMealModal,
+                isEnabled: true
               },
               {
                 label: "Create cuisine",
-                bootstrap_color: "btn-secondary",
+                bootstrap_color: "outline-primary",
                 onClick: showCreateCuisineModal,
+                isEnabled: true
               },
-            ] as unknown as Button[]
+              {
+                label: "Delete selected",
+                bootstrap_color: "outline-danger",
+                onClick: handleMealDeleteSelected,
+                isEnabled: isMealBulkDeletionEnabled
+              }
+            ]
+          }
+          selectedItemNames={order.mealNames}
+          onSelectionChange={(selectedMeals) => {
+            const mealNames = selectedMeals.map(meal => meal.name);
+            setOrder((prev) => ({ ...prev, meals: selectedMeals, mealNames: mealNames }));
+            setMealBulkDeletionEnabled(selectedMeals.length > 0);
+          }}
+          onPriceChange={(priceDelta) =>
+            setOrder((prev) => ({ ...prev, totalPrice: prev.totalPrice + priceDelta }))
           }
         />
         <MenuSectionCard
@@ -299,18 +398,32 @@ const MenuPage: React.FC = () => {
             [
               {
                 label: "Create",
-                bootstrap_color: "btn-primary",
+                bootstrap_color: "outline-success",
                 onClick: showCreateDessertModal,
+                isEnabled: true
               },
-            ] as unknown as Button[]
+              {
+                label: "Delete selected",
+                bootstrap_color: "outline-danger",
+                onClick: handleDessertDeleteSelected,
+                isEnabled: isDessertBulkDeletionEnabled
+              }
+            ]
+          }
+          selectedItemNames={order.dessertNames}
+          onSelectionChange={(selectedDesserts) => {
+            const dessertNames = selectedDesserts.map(dessert => dessert.name);
+            setOrder((prev) => ({ ...prev, desserts: selectedDesserts, dessertNames: dessertNames }));
+            setDessertBulkDeletionEnabled(selectedDesserts.length > 0);
+          }}
+          onPriceChange={(priceDelta) =>
+            setOrder((prev) => ({ ...prev, totalPrice: prev.totalPrice + priceDelta }))
           }
         />
 
         <div>
-          <h5>Total price: {123} usd</h5>
-          <button type="button" className="btn btn-primary">
-            Order now
-          </button>
+          <h5>Total price: {order.totalPrice.toFixed(2)} usd</h5>
+          <Button onClick={submitOrder} variant="primary">Order now</Button>
         </div>
     </div>
   );

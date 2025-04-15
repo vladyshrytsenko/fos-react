@@ -1,13 +1,13 @@
 
 export interface Meal {
-    id?: number;
+    id: number;
     createdAt?: Date;
     updatedAt?: Date;
     isDeleted?: boolean;
     deletedAt?: Date | null;
     name: string;
     price: number;
-    portionWeight: number;
+    portionWeight?: number;
     cuisineId?: number;
-    cuisineName: string;
+    cuisineName?: string;
 }

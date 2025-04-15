@@ -1,14 +1,14 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import Login from "./pages/login/LoginPage";
-import NotFound from "./pages/NotFound";
 import PrivateRoute from "./components/PrivateRoute";
-import History from "./pages/History";
-import Report from "./pages/Report";
-import PaymentSuccess from "./pages/PaymentSuccess";
-import Payment from "./pages/Payment";
 import AuthCallback from "./components/AuthCallback";
 import storageService from "./services/storageService";
 import MenuPage from "./pages/menu/MenuPage";
+import PaymentPage from "./pages/PaymentPage";
+import NotFoundPage from "./pages/NotFoundPage";
+import ReportPage from "./pages/ReportPage";
+import HistoryPage from "./pages/HistoryPage";
+import PaymentSuccessPage from "./pages/PaymentSuccessPage";
+import LoginPage from "./pages/login/LoginPage";
 
 const getToken = storageService.getJwtToken();
 const isAuthernticated = getToken ? true : false;
@@ -16,7 +16,7 @@ const isAuthernticated = getToken ? true : false;
 const router = createBrowserRouter([
   {
     path: '/login',
-    element: <Login />
+    element: <LoginPage />
   },
   {
     path: '/menu',
@@ -34,20 +34,13 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <PaymentSuccess />
+        element: <PaymentSuccessPage />
       }
     ]
   },
   {
     path: '/auth-callback',
     element: <AuthCallback />
-    // element: <PrivateRoute isAuth={isAuthernticated} />,
-    // children: [
-    //   {
-    //     path: "",
-    //     element: <AuthCallback />
-    //   }
-    // ]
   },
   {
     path: '/history',
@@ -55,7 +48,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <History />
+        element: <HistoryPage />
       }
     ]
   },
@@ -65,7 +58,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <Report />
+        element: <ReportPage />
       }
     ]
   },
@@ -75,7 +68,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <Payment id={0} />
+        element: <PaymentPage />
       }
     ]
   },
@@ -85,7 +78,7 @@ const router = createBrowserRouter([
   },
   {
     path: '*',
-    element: <NotFound />
+    element: <NotFoundPage />
   }
 ]);
 
