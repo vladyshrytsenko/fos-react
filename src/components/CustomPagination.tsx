@@ -41,8 +41,16 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
     }
   };
 
+  const onFirstPageClick = () => {
+    return changePage(0);
+  };
+
   const onNextPageClick = () => {
     changePage(currentPage + 1);
+  };
+
+  const onLastPageClick = () => {
+    return changePage(pagesCount-1);
   };
 
   const setLastPageAsCurrent = () => {
@@ -54,7 +62,7 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
   let isPageNumberOutOfRange = false;
 
   const pageNumbers = [...new Array(pagesCount)].map((_, index) => {
-    const pageNumber = index + 1;
+    const pageNumber = index;
     const isPageNumberFirst = pageNumber === 1;
     const isPageNumberLast = pageNumber === pagesCount;
     const isCurrentPageWithinTwoPageNumbers = Math.abs(pageNumber - currentPage) <= 2;
@@ -68,14 +76,14 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
           onClick={() => onPageNumberClick(pageNumber)}
           active={pageNumber === currentPage}
         >
-          {pageNumber}
+          {pageNumber+1}
         </Pagination.Item>
       );
     }
 
     if (!isPageNumberOutOfRange) {
       isPageNumberOutOfRange = true;
-      return <Pagination.Ellipsis key={`ellipsis-${pageNumber}`} className="muted" />;
+      return <Pagination.Ellipsis key={`ellipsis-${pageNumber}`} disabled={true} className="muted" />;
     }
 
     return null;
@@ -88,6 +96,7 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
         <div>
             {isPaginationShown && (
             <Pagination size="sm">
+            <Pagination.First onClick={onFirstPageClick} />
             <Pagination.Prev
                 className={isCurrentPageFirst ? "disable" : ""}
                 onClick={onPreviousPageClick}
@@ -99,6 +108,7 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
                 disabled={isCurrentPageLast}
                 className={isCurrentPageLast ? "disable" : ""}
             />
+            <Pagination.Last onClick={onLastPageClick} />
             </Pagination>
             )}
         </div>
