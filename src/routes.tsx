@@ -2,13 +2,13 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
 import AuthCallback from "./components/AuthCallback";
 import storageService from "./services/storageService";
-import MenuPage from "./pages/menu/MenuPage";
+import MenuPage from "./pages/MenuPage";
 import PaymentPage from "./pages/PaymentPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ReportPage from "./pages/ReportPage";
 import HistoryPage from "./pages/HistoryPage";
 import PaymentSuccessPage from "./pages/PaymentSuccessPage";
-import LoginPage from "./pages/login/LoginPage";
+import LoginPage from "./pages/LoginPage";
 
 const getToken = storageService.getJwtToken();
 const isAuthernticated = getToken ? true : false;

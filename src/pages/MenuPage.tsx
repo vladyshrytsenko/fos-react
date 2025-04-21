@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from "react";
-import MenuSectionCard from "../../components/card/MenuSectionCard";
-import CustomNavbar from "../../components/navbar/CustomNavbar";
-import { Dessert } from "../../models/dessert";
-import { Drink } from "../../models/drink";
-import { Meal } from "../../models/meal";
-import { Order } from "../../models/order";
-import drinkService from "../../services/drinkService";
-import mealService from "../../services/mealService";
-import dessertService from "../../services/dessertService";
-import userService from "../../services/userService";
-import BootstrapModal from "../../components/BootstrapModal";
-import { Cuisine } from "../../models/cuisine";
-import cuisineService from "../../services/cuisineService";
-import MenuEntityForm from "../../components/MenuEntityForm";
-import orderService from "../../services/orderService";
-import { Payment } from "../../models/payment";
+import MenuSectionCard from "../components/card/MenuSectionCard";
+import CustomNavbar from "../components/navbar/CustomNavbar";
+import { Dessert } from "../models/dessert";
+import { Drink } from "../models/drink";
+import { Meal } from "../models/meal";
+import { Order } from "../models/order";
+import drinkService from "../services/drinkService";
+import mealService from "../services/mealService";
+import dessertService from "../services/dessertService";
+import userService from "../services/userService";
+import BootstrapModal from "../components/BootstrapModal";
+import { Cuisine } from "../models/cuisine";
+import cuisineService from "../services/cuisineService";
+import MenuEntityForm from "../components/MenuEntityForm";
+import orderService from "../services/orderService";
 import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 
@@ -213,11 +212,11 @@ const MenuPage: React.FC = () => {
     try {
       const createdOrder = await orderService.create(order);
       console.log('Order created successfully:', createdOrder);
-      navigate(`/payment/${createdOrder.payment?.id}`);
+      navigate(`/payment/${createdOrder.payment?.id}?totalPrice=${order.totalPrice}`);
     } catch (error) {
       console.error('Failed to submit order:', error);
     }
-  }
+  };
 
   return (
     <div>
