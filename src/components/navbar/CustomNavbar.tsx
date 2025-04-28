@@ -4,7 +4,7 @@ import "./CustomNavbar.css";
 import authService from "../../services/authService";
 import { Role, User } from "../../models/user";
 import userService from "../../services/userService";
-import { Button } from "react-bootstrap";
+import { Badge, Button } from "react-bootstrap";
 
 export default function CustomNavbar() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -52,6 +52,9 @@ export default function CustomNavbar() {
           </li>
           <li className="nav-item">
             <a className="nav-link" href="/report">Report page</a>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link" href="/support/my-topics">Support chat<Badge bg="light" text="dark"> +2</Badge></a> 
           </li>
         </ul>
 
