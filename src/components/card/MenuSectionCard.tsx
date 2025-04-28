@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CustomCheckbox from "../CustomCheckbox";
-import { Button, Card, Pagination, Table } from "react-bootstrap";
+import { Button, ButtonGroup, Card, Pagination, Table } from "react-bootstrap";
 import CustomPagination from "../CustomPagination";
 
 interface CustomButton {
@@ -82,17 +82,20 @@ const MenuSectionCard: React.FC<MenuSectionCardProps> = ({
           <div>
             {isAdmin && (
               <div>
-                {buttons.map((button, index) => (
-                  <Button
-                    key={index}
-                    onClick={button.onClick}
-                    size="sm"
-                    variant={button.bootstrap_color}
-                    disabled={!button.isEnabled}
-                  >
-                    {button.label}
-                  </Button>
-                ))}
+                <ButtonGroup>
+                  {buttons.map((button, index) => (
+                      <Button
+                        key={index}
+                        onClick={button.onClick}
+                        size="sm"
+                        variant={button.bootstrap_color}
+                        disabled={!button.isEnabled}
+                      >
+                        {button.label}
+                      </Button>
+                  ))}
+                </ButtonGroup>
+
               </div>
             )}
           </div>

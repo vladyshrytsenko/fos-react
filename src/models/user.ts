@@ -9,5 +9,6 @@ export interface User {
 export enum Role {
     Admin = 'ADMIN',
     User = 'USER',
+    Agent = 'AGENT',
     Guest = 'GUEST'
 }

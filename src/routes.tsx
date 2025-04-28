@@ -9,6 +9,8 @@ import ReportPage from "./pages/ReportPage";
 import HistoryPage from "./pages/HistoryPage";
 import PaymentSuccessPage from "./pages/PaymentSuccessPage";
 import LoginPage from "./pages/LoginPage";
+import UserTopicsPage from "./pages/support/SupportPage";
+import UserChatPage from "./pages/support/UserChatPage";
 
 const getToken = storageService.getJwtToken();
 const isAuthernticated = getToken ? true : false;
@@ -59,6 +61,26 @@ const router = createBrowserRouter([
       {
         path: "",
         element: <ReportPage />
+      }
+    ]
+  },
+  {
+    path: '/support/my-topics',
+    element: <PrivateRoute isAuth={isAuthernticated} />,
+    children: [
+      {
+        path: "",
+        element: <UserTopicsPage />
+      }
+    ]
+  },
+  {
+    path: '/support/chat/:id',
+    element: <PrivateRoute isAuth={isAuthernticated} />,
+    children: [
+      {
+        path: "",
+        element: <UserChatPage />
       }
     ]
   },

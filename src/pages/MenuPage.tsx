@@ -71,23 +71,12 @@ const MenuPage: React.FC = () => {
       });
   }, []);
 
-  function showCreateCuisineModal() {
-    setCreateCuisineModalShow(true);
-  }
+  const showCreateCuisineModal = () => setCreateCuisineModalShow(true);
+  const showCreateDrinkModal = () => setCreateDrinkModalShow(true);
+  const showCreateDessertModal = () => setCreateDessertModalShow(true);
+  const showCreateMealModal = () => setCreateMealModalShow(true);
 
-  function showCreateDrinkModal() {
-    setCreateDrinkModalShow(true);
-  }
-
-  function showCreateDessertModal() {
-    setCreateDessertModalShow(true);
-  }
-
-  function showCreateMealModal() {
-    setCreateMealModalShow(true);
-  }
-
-  const handleCuisineSubmit = async (data: Record<string, string | number>) => {
+  const handleCuisineCreateSubmit = async (data: Record<string, string | number>) => {
     try {
       const createdCuisine = await cuisineService.create({
         name: data.name as string,
@@ -118,7 +107,7 @@ const MenuPage: React.FC = () => {
     }
   };
 
-  const handleMealSubmit = async (data: Record<string, string | number>) => {
+  const handleMealCreateSubmit = async (data: Record<string, string | number>) => {
     try {
       const createdMeal = await mealService.create({
         id: data.id as number,
@@ -153,7 +142,7 @@ const MenuPage: React.FC = () => {
     }
   };
 
-  const handleDrinkSubmit = async (data: Record<string, string | number>) => {
+  const handleDrinkCreateSubmit = async (data: Record<string, string | number>) => {
     try {
       const createdDrink = await drinkService.create({
         id: data.id as number,
@@ -186,7 +175,7 @@ const MenuPage: React.FC = () => {
     }
   };
 
-  const handleDessertSubmit = async (data: Record<string, string | number>) => {
+  const handleDessertCreateSubmit = async (data: Record<string, string | number>) => {
     try {
       const createdDessert = await dessertService.create({
         id: data.id as number,
@@ -232,7 +221,7 @@ const MenuPage: React.FC = () => {
               fields={[
                 { name: "name", label: "Name", type: "text", required: true },
               ]}
-              onSubmit={handleCuisineSubmit}
+              onSubmit={handleCuisineCreateSubmit}
             />
           }
         />
@@ -267,7 +256,7 @@ const MenuPage: React.FC = () => {
                   required: true,
                 },
               ]}
-              onSubmit={handleMealSubmit}
+              onSubmit={handleMealCreateSubmit}
             />
           }
         />
@@ -288,7 +277,7 @@ const MenuPage: React.FC = () => {
                   required: true,
                 },
               ]}
-              onSubmit={handleDrinkSubmit}
+              onSubmit={handleDrinkCreateSubmit}
             />
           }
         />
@@ -316,7 +305,7 @@ const MenuPage: React.FC = () => {
                   required: true,
                 },
               ]}
-              onSubmit={handleDessertSubmit}
+              onSubmit={handleDessertCreateSubmit}
             />
           }
         />
