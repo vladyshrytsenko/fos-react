@@ -18,9 +18,7 @@ const HistoryPage: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(5);
-  const [totalPages, setTotalPages] = useState<number>(0);
   const [totalOrders, setTotalOrders] = useState<number>(0);
-  const [pageArray, setPageArray] = useState<number[]>([]);
 
   const findAllOrders = async (size: number) => {
     orderService.findAll(currentPage, size).then(response => {
@@ -37,8 +35,6 @@ const HistoryPage: React.FC = () => {
 
       setOrders(orderContentArr);
       setTotalOrders(response?.totalElements || 0);
-      setTotalPages(response?.totalPages || 0);
-      setPageArray(Array.from({ length: totalPages }, (_, i) => i));
     });
   };
 

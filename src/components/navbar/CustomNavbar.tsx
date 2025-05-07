@@ -4,7 +4,7 @@ import "./CustomNavbar.css";
 import authService from "../../services/authService";
 import { Role, User } from "../../models/user";
 import userService from "../../services/userService";
-import { Badge, Button } from "react-bootstrap";
+import { Badge, Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 
 export default function CustomNavbar() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -28,42 +28,29 @@ export default function CustomNavbar() {
   }
 
   return (
-    <nav className="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
-      <a className="navbar-brand" href="/menu">Food Ordering System</a>
-      <button
-        className="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarCollapse"
-        aria-controls="navbarCollapse"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span className="navbar-toggler-icon"></span>
-      </button>
+    <Navbar collapseOnSelect expand="lg" bg="dark" data-bs-theme="dark">
+      <Container>
+        <Navbar.Brand href="/menu">FOS React</Navbar.Brand>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="me-auto">
+            <Nav.Link href="/menu">Menu</Nav.Link>
+            <Nav.Link href="/history">History</Nav.Link>
+            <Nav.Link href="/report">Report page</Nav.Link>
+            <Nav.Link href="/support/topics">Support chat <Badge bg="light" text="dark"> +2</Badge></Nav.Link>
+          </Nav>
+          <Nav>
+            <NavDropdown title={`${currentUser.email}! (${currentUser.role})`} id="basic-nav-dropdown">
+              {currentUser.role === 'ADMIN' && (
+                <NavDropdown.Item href="/users">System users</NavDropdown.Item>
+              )}
+              <NavDropdown.Divider />
+              <NavDropdown.Item onClick={authService.logout}>Log out</NavDropdown.Item>
+            </NavDropdown>
+          </Nav>
 
-      <div className="collapse navbar-collapse" id="navbarCollapse">
-        <ul className="navbar-nav mr-auto">
-          <li className="nav-item">
-            <a className="nav-link" href="/menu">Menu</a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link" href="/history">History</a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link" href="/report">Report page</a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link" href="/support/my-topics">Support chat<Badge bg="light" text="dark"> +2</Badge></a> 
-          </li>
-        </ul>
-
-        <div className="ml-auto d-flex align-items-center">
-          <p className="text-white mb-0 mr-2">Welcome, {currentUser.email}! ({currentUser.role})</p>
-          <Button onClick={authService.logout} variant="danger">Log out</Button>
-        </div>
-      </div>
-
-    </nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
 }

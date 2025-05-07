@@ -6,13 +6,13 @@ const BASE_URL = `${environment.gatewayUrl}/api/support/chats`;
 
 const supportService = {
 
-    findAllChatsForCustomer: (customerId: number): Promise<ChatSupport[]> => 
-        axiosInstance.get<{content: ChatSupport[]}>(`${BASE_URL}/customer/${customerId}`)
-            .then(res => res.data.content),
+    findAllChatsForCustomer: (page: number = 0, size: number = 10): Promise<any> => 
+        axiosInstance.get<any>(`${BASE_URL}/customer`, { params: { page, size, sort: 'id,desc' }})
+            .then(res => res.data),
 
-    findAllChatsHandledByAgent: (agentId: number): Promise<ChatSupport[]> => 
-        axiosInstance.get<{content: ChatSupport[]}>(`${BASE_URL}/agent/${agentId}`)
-            .then(res => res.data.content),
+    findAllChatsHandledByAgent: (page: number = 0, size: number = 10): Promise<any> => 
+        axiosInstance.get<any>(`${BASE_URL}/agent`, { params: { page, size, sort: 'id,desc' }})
+            .then(res => res.data),
 
     create: (topic: Topic): Promise<ChatSupport> => 
         axiosInstance.post<ChatSupport>(BASE_URL, topic)
