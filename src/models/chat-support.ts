@@ -6,6 +6,7 @@ export interface ChatSupport {
     agentId: number;
     status: ChatSupportStatus;
     subject: string;
+    lastMessagePreview: string;
     messages: Message[];
     createdAt?: Date;
     updatedAt?: Date;
@@ -15,7 +16,7 @@ export interface ChatSupport {
 }
 
 export interface Message {
-    chatId?: String;
+    chatId: String;
     senderId?: number;
     senderName?: string;
     senderRole?: Role;

@@ -41,16 +41,8 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
     }
   };
 
-  const onFirstPageClick = () => {
-    return changePage(0);
-  };
-
   const onNextPageClick = () => {
     changePage(currentPage + 1);
-  };
-
-  const onLastPageClick = () => {
-    return changePage(pagesCount-1);
   };
 
   const setLastPageAsCurrent = () => {
@@ -62,7 +54,7 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
   let isPageNumberOutOfRange = false;
 
   const pageNumbers = [...new Array(pagesCount)].map((_, index) => {
-    const pageNumber = index;
+    const pageNumber = index+1;
     const isPageNumberFirst = pageNumber === 1;
     const isPageNumberLast = pageNumber === pagesCount;
     const isCurrentPageWithinTwoPageNumbers = Math.abs(pageNumber - currentPage) <= 2;
@@ -76,7 +68,7 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
           onClick={() => onPageNumberClick(pageNumber)}
           active={pageNumber === currentPage}
         >
-          {pageNumber+1}
+          {pageNumber}
         </Pagination.Item>
       );
     }
@@ -96,19 +88,17 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
         <div>
             {isPaginationShown && (
             <Pagination size="sm">
-            <Pagination.First onClick={onFirstPageClick} />
-            <Pagination.Prev
-                className={isCurrentPageFirst ? "disable" : ""}
-                onClick={onPreviousPageClick}
-                disabled={isCurrentPageFirst}
-            />
-            {pageNumbers}
-            <Pagination.Next
-                onClick={onNextPageClick}
-                disabled={isCurrentPageLast}
-                className={isCurrentPageLast ? "disable" : ""}
-            />
-            <Pagination.Last onClick={onLastPageClick} />
+              <Pagination.Prev
+                  className={isCurrentPageFirst ? "disable" : ""}
+                  onClick={onPreviousPageClick}
+                  disabled={isCurrentPageFirst}
+              />
+              {pageNumbers}
+              <Pagination.Next
+                  onClick={onNextPageClick}
+                  disabled={isCurrentPageLast}
+                  className={isCurrentPageLast ? "disable" : ""}
+              />
             </Pagination>
             )}
         </div>

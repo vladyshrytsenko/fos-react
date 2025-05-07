@@ -18,17 +18,13 @@ const userService = {
         axiosInstance.get<User>(`${BASE_URL}/email/${email}`)
             .then(res => res.data),
 
-    getByRole: (role: string): Promise<User> =>
-        axiosInstance.get<User>(`${BASE_URL}/role/${role}`)
-            .then(res => res.data),
-
     getCurrentUser: (): Promise<User> =>
         axiosInstance.get<User>(`${BASE_URL}/current-user`)
             .then(res => res.data),
-
-    findAll: (): Promise<User[]> => 
-        axiosInstance.get<{content: User[]}>(BASE_URL)
-            .then(res => res.data.content),
+    
+    findAll: (page: number = 0, size: number = 10): Promise<any> => 
+        axiosInstance.get<any>(BASE_URL, { params: { page, size, sort: 'id,desc' }})
+            .then(res => res.data),
 
     register: (user: User): Promise<any> =>
         axiosInstance.post<any>(`${BASE_URL}/auth/register`, user)

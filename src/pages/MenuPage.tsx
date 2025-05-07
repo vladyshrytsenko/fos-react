@@ -318,13 +318,13 @@ const MenuPage: React.FC = () => {
           buttons={
             [
               {
-                label: "Create",
+                label: "create",
                 bootstrap_color: "outline-success",
                 onClick: showCreateDrinkModal,
                 isEnabled: true
               },
               {
-                label: "Delete selected",
+                label: "delete selected",
                 bootstrap_color: "outline-danger",
                 onClick: handleDrinkDeleteSelected,
                 isEnabled: isDrinkBulkDeletionEnabled
@@ -349,19 +349,19 @@ const MenuPage: React.FC = () => {
           buttons={
             [
               {
-                label: "Create",
+                label: "create",
                 bootstrap_color: "outline-success",
                 onClick: showCreateMealModal,
                 isEnabled: true
               },
               {
-                label: "Create cuisine",
+                label: "create cuisine",
                 bootstrap_color: "outline-primary",
                 onClick: showCreateCuisineModal,
                 isEnabled: true
               },
               {
-                label: "Delete selected",
+                label: "delete selected",
                 bootstrap_color: "outline-danger",
                 onClick: handleMealDeleteSelected,
                 isEnabled: isMealBulkDeletionEnabled
@@ -385,13 +385,13 @@ const MenuPage: React.FC = () => {
           buttons={
             [
               {
-                label: "Create",
+                label: "create",
                 bootstrap_color: "outline-success",
                 onClick: showCreateDessertModal,
                 isEnabled: true
               },
               {
-                label: "Delete selected",
+                label: "delete selected",
                 bootstrap_color: "outline-danger",
                 onClick: handleDessertDeleteSelected,
                 isEnabled: isDessertBulkDeletionEnabled
